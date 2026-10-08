@@ -1,0 +1,26 @@
+<h1>Editar tarea</h1>
+
+<form action="/tasks/<%= task.ID %>" method="POST" class="edit-task">
+  <input type="hidden" name="authenticity_token" value="<%= authenticity_token %>">
+  <input type="hidden" name="_method" value="PUT">
+  <label for="task-title">Título</label>
+  <div class="new-task-row">
+    <input
+      id="task-title"
+      type="text"
+      name="title"
+      value="<%= task.Title %>"
+      maxlength="200"
+      autocomplete="off"
+      autofocus
+      <%= if (errors.HasAny()) { %>aria-invalid="true" aria-describedby="title-error"<% } %>
+    >
+    <button type="submit" class="button button-primary">Guardar</button>
+    <a href="/" class="button">Cancelar</a>
+  </div>
+  <%= if (errors.HasAny()) { %>
+    <p id="title-error" class="field-error" role="alert">
+      <%= for (msg) in errors.Get("title") { %><%= msg %><% } %>
+    </p>
+  <% } %>
+</form>

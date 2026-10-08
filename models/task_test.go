@@ -69,3 +69,24 @@ func (ms *ModelSuite) Test_Task_Toggle_Persists() {
 	ms.NoError(ms.DB.Find(reloaded, task.ID))
 	ms.True(reloaded.Completed)
 }
+
+func (ms *ModelSuite) Test_Task_UpdateTitle_Validates() {
+	task := &Task{Title: "Título original"}
+	verrs, err := ms.DB.ValidateAndCreate(task)
+	ms.NoError(err)
+	ms.False(verrs.HasAny())
+
+	task.Title = ""
+	verrs, err = ms.DB.ValidateAndUpdate(task)
+	ms.NoError(err)
+	ms.Contains(verrs.Get("title"), "El título es obligatorio.")
+
+	task.Title = "Título nuevo"
+	verrs, err = ms.DB.ValidateAndUpdate(task)
+	ms.NoError(err)
+	ms.False(verrs.HasAny())
+
+	reloaded := &Task{}
+	ms.NoError(ms.DB.Find(reloaded, task.ID))
+	ms.Equal("Título nuevo", reloaded.Title)
+}

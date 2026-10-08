@@ -33,6 +33,7 @@
           <span class="task-status">Completada</span>
         <% } %>
         <div class="task-actions">
+          <a href="/tasks/<%= t.ID %>/edit" class="button">Editar</a>
           <form action="/tasks/<%= t.ID %>/toggle" method="POST">
             <input type="hidden" name="authenticity_token" value="<%= authenticity_token %>">
             <input type="hidden" name="_method" value="PUT">
